@@ -28,19 +28,84 @@
             <table class="w-full text-left">
                 <thead class="bg-gray-50 text-gray-600">
                     <tr>
+                        <th class="p-4">Foto</th>
                         <th class="p-4">Nama Alumni</th>
                         <th class="p-4">Tahun Lulus</th>
                         <th class="p-4">Pekerjaan/Pendidikan Sekarang</th>
+                        <th class="p-4">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y text-gray-700">
-                    <tr>
-                        <td class="p-4">Budi Santoso</td>
-                        <td class="p-4">2022</td>
-                        <td class="p-4">Mahasiswa UIN</td>
-                    </tr>
+                    @foreach ($alumni as $item)
+                        <tr>
+                            <td class="p-4">
+                                @if ($item->foto)
+                                    <img src="{{ asset('storage/' . $item->foto) }}" alt="Foto {{ $item->nama }}"
+                                        class="w-16 h-16 object-cover rounded-full">
+                                @else
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                                @endif
+                            </td>
+                            <td class="p-4">{{ $item->nama }}</td>
+                            <td class="p-4">{{ $item->tahun_lulus }}</td>
+                            <td class="p-4">{{ $item->pekerjaan ?? $item->kampus }}</td>
+                            <td class="p-4">
+                                <button onclick="showAlumniDetail('{{ json_encode($item) }}')"
+                                    class="text-blue-600 hover:text-blue-800 font-bold transition">
+                                    Detail
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+
+    <div id="modalAlumni" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden">
+            <div class="bg-slate-800 text-white p-4 flex justify-between">
+                <span class="font-bold">PROFIL ALUMNI</span>
+                <button onclick="closeModal()" class="text-xl">&times;</button>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Nama Lengkap</span>
+                        <span id="sNama" class="font-bold"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Kode Santri</span>
+                        <span id="sKode" class="font-mono text-emerald-600 font-bold"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Angkatan</span>
+                        <span id="sAngkatan" class="font-bold"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Alamat</span>
+                        <span id="sAlamat" class="font-bold text-right italic"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 bg-gray-50 text-right">
+                <button onclick="closeModal()" class="bg-slate-800 text-white px-6 py-2 rounded-lg">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showAlumniDetail(data) {
+            let a = JSON.parse(data);
+            document.getElementById('sNama').innerText = a.nama;
+            document.getElementById('sKode').innerText = a.kode_santri;
+            document.getElementById('sAngkatan').innerText = a.angkatan;
+            document.getElementById('sAlamat').innerText = a.alamat || '-';
+            document.getElementById('modalAlumni').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modalAlumni').classList.add('hidden');
+        }
+    </script>
 @endsection

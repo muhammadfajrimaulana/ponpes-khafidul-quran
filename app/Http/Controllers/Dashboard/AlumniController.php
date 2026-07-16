@@ -8,10 +8,15 @@ class AlumniController extends \App\Http\Controllers\Controller
 {
     public function index(Request $request)
     {
-        // Contoh filter angkatan
-        $angkatan = $request->input('angkatan');
+        // Logika filter sederhana
+        $query = \App\Models\Alumni::query();
 
-        // Nanti ganti dengan model Alumni::query()
-        return view('dashboard.dataalumni', compact('angkatan'));
+        if ($request->has('search')) {
+            $query->where('nama', 'like', '%' . $request->search . '%')
+                ->orWhere('kode_santri', $request->search);
+        }
+
+        $alumni = $query->paginate(10);
+        return view('dashboard.dataalumni', compact('alumni'));
     }
 }
