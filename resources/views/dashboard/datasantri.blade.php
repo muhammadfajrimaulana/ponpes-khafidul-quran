@@ -1,10 +1,15 @@
 @extends('layouts.dashboard')
 
 @section('content')
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Manajemen Santri</h2>
+        <p class="text-gray-500 text-sm">Kelola data santri pondok pesantren di sini.</p>
+    </div>
+
     <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
         <!-- Header & Pencarian -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-            <h2 class="text-2xl font-bold text-gray-800">Data Santri Aktif</h2>
+            <h2 class="text-2xl font-bold text-gray-800">Data Santri</h2>
 
             <form action="{{ route('admin.santri') }}" method="GET" class="flex gap-2">
                 <input type="text" name="search" placeholder="Cari nama/kode..."

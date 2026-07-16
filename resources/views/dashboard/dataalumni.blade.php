@@ -1,6 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('content')
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Manajemen Alumni</h2>
+        <p class="text-gray-500 text-sm">Kelola data alumni pondok pesantren di sini.</p>
+    </div>
+
     <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
         <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
             <h2 class="text-2xl font-bold text-gray-800">Data Alumni</h2>
