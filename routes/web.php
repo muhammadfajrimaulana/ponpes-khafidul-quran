@@ -28,7 +28,7 @@ Route::get('/visi', function () {
     return view('web.profil.Visi');
 })->name('visi');
 Route::get('/pengurus', function () {
-    return view('web.profil.pengurus');
+    return view('web.profil.datapengurus');
 })->name('pengurus');
 Route::get('/madrasah-tsanawiyah', function () {
     return view('web.jenjang.mts');
