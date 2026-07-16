@@ -38,8 +38,13 @@
                     @foreach ($santri as $item)
                         <tr>
                             <td class="p-4">
-                                <img src="{{ asset('storage/profiles/' . $item->foto) ?? asset('storage/profiles/default.jpg') }}"
-                                    alt="Foto {{ $item->nama_santri }}" class="w-16 h-16 object-cover rounded-full">
+                                @php
+                                    $fotoPath = 'storage/profiles/' . $item->foto;
+                                    $fotoTersedia = !empty($item->foto) && file_exists(public_path($fotoPath));
+                                @endphp
+
+                                <img src="{{ $fotoTersedia ? asset($fotoPath) : asset('storage/profiles/default.jpg') }}"
+                                    alt="Foto {{ $item->nama_santri }}" class="w-10 h-10 rounded-full object-cover">
                             </td>
                             <td class="p-4 font-mono text-emerald-600">{{ $item->kode_santri }}</td>
                             <td class="p-4">{{ $item->nama_santri }}</td>
@@ -52,7 +57,7 @@
                                 </span>
                             </td>
                             <td class="p-4">
-                                <button onclick="showSantriDetail('{{ json_encode($item) }}')"
+                                <button onclick='showSantriDetail(@json($item))'
                                     class="text-blue-600 hover:text-blue-800 font-bold transition">
                                     Detail
                                 </button>
@@ -104,18 +109,20 @@
     </div>
 
     <script>
-        function showSantriDetail(data) {
-            let s = JSON.parse(data);
+        function showSantriDetail(s) {
+
+            console.log(s);
 
             let baseUrl = "{{ asset('storage/profiles/') }}/";
             let fotoUrl = s.foto ? baseUrl + s.foto : "{{ asset('storage/profiles/default.jpg') }}";
 
             document.getElementById('sFoto').src = fotoUrl;
-            document.getElementById('sNama').innerText = s.nama_santri;
-            document.getElementById('sKode').innerText = s.kode_santri;
-            document.getElementById('sNamaWali').innerText = s.nama_wali;
-            document.getElementById('sKontakWali').innerText = s.kontak_wali;
-            document.getElementById('sAngkatan').innerText = s.angkatan;
+
+            document.getElementById('sNama').innerText = s.nama_santri || '-';
+            document.getElementById('sKode').innerText = s.kode_santri || '-';
+            document.getElementById('sNamaWali').innerText = s.nama_wali || '-';
+            document.getElementById('sKontakWali').innerText = s.kontak_wali || '-';
+            document.getElementById('sAngkatan').innerText = s.angkatan || '-';
 
             document.getElementById('modalSantri').classList.remove('hidden');
         }

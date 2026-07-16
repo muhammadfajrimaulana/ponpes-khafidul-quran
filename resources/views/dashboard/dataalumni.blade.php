@@ -39,14 +39,19 @@
                     @foreach ($alumni as $item)
                         <tr>
                             <td class="p-4">
-                                <img src="{{ asset('storage/profiles/' . $item->foto) ?? asset('storage/profiles/default.jpg') }}"
-                                    alt="Foto {{ $item->nama_santri }}" class="w-16 h-16 object-cover rounded-full">
+                                @php
+                                    $fotoPath = 'storage/profiles/' . $item->foto;
+                                    $fotoTersedia = !empty($item->foto) && file_exists(public_path($fotoPath));
+                                @endphp
+
+                                <img src="{{ $fotoTersedia ? asset($fotoPath) : asset('storage/profiles/default.jpg') }}"
+                                    alt="Foto {{ $item->nama }}" class="w-10 h-10 rounded-full object-cover">
                             </td>
                             <td class="p-4">{{ $item->nama }}</td>
                             <td class="p-4">{{ $item->tahun_lulus }}</td>
                             <td class="p-4">{{ $item->pekerjaan ?? $item->kampus }}</td>
                             <td class="p-4">
-                                <button onclick="showAlumniDetail('{{ json_encode($item) }}')"
+                                <button onclick='showAlumniDetail(@json($item))'
                                     class="text-blue-600 hover:text-blue-800 font-bold transition">
                                     Detail
                                 </button>
@@ -102,19 +107,19 @@
     </div>
 
     <script>
-        function showAlumniDetail(data) {
-            let s = JSON.parse(data);
+        function showAlumniDetail(s) {
+
+            // console.log(s);
 
             let baseUrl = "{{ asset('storage/profiles/') }}/";
             let fotoUrl = s.foto ? baseUrl + s.foto : "{{ asset('storage/profiles/default.jpg') }}";
 
             document.getElementById('sFoto').src = fotoUrl;
-            document.getElementById('sNama').innerText = s.nama;
-            document.getElementById('sKode').innerText = s.kode_santri || '-'; // Pastikan ambil dari s
-            document.getElementById('sNamaWali').innerText = s.nama_wali;
-            document.getElementById('sKontakWali').innerText = s.kontak_wali;
-
-            document.getElementById('sAngkatan').innerText = s.angkatan;
+            document.getElementById('sNama').innerText = s.nama || '-';
+            document.getElementById('sKode').innerText = s.kode_santri || '-';
+            document.getElementById('sNamaWali').innerText = s.nama_wali || '-';
+            document.getElementById('sKontakWali').innerText = s.kontak_wali || '-';
+            document.getElementById('sAngkatan').innerText = s.angkatan || '-';
             document.getElementById('sAlamat').innerText = s.alamat || '-';
 
             document.getElementById('modalAlumni').classList.remove('hidden');

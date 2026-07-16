@@ -30,16 +30,23 @@
                     @foreach ($pengurus as $p)
                         <tr>
                             <td class="p-4 flex items-center gap-3">
-                                <img src="{{ asset('storage/profiles/' . $p->foto) }}"
-                                    class="w-10 h-10 rounded-full object-cover">
+                                @php
+                                    $fotoPath = 'storage/profiles/' . $p->foto;
+                                    $fotoTersedia = !empty($p->foto) && file_exists(public_path($fotoPath));
+                                @endphp
+
+                                <img src="{{ $fotoTersedia ? asset($fotoPath) : asset('storage/profiles/default.jpg') }}"
+                                    alt="Foto {{ $p->nama }}" class="w-10 h-10 rounded-full object-cover">
                             </td>
                             <td class="p-4">{{ $p->nama }}</td>
                             <td class="p-4">{{ $p->email }}</td>
                             <td class="p-4">{{ $p->jabatan }}</td>
                             <td class="p-4">{{ $p->alamat }}</td>
                             <td class="p-4">
-                                <button onclick="showDetail('{{ json_encode($p) }}')"
-                                    class="text-emerald-600 hover:underline font-bold">Detail</button>
+                                <button onclick='showDetail(@json($p))'
+                                    class="text-blue-600 hover:text-blue-800 font-bold transition">
+                                    Detail
+                                </button>
                                 <button class="text-blue-600 hover:underline ml-3">Edit</button>
                             </td>
                         </tr>
@@ -56,7 +63,9 @@
                 <button onclick="closeModal()" class="text-xl">&times;</button>
             </div>
             <div class="p-6 text-center">
-                <img id="mFoto" src="" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-emerald-500">
+                <img id="mFoto" src="" alt="Foto"
+                    class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-emerald-500"
+                    onerror="this.onerror=null; this.src='{{ url('storage/profiles/default.jpg') }}';">
                 <h2 id="mNama" class="text-xl font-bold text-slate-800"></h2>
                 <span id="mJabatan" class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-bold"></span>
 
@@ -78,15 +87,25 @@
     </div>
 
     <script>
-        function showDetail(data) {
-            let p = JSON.parse(data);
-            document.getElementById('mNama').innerText = p.nama;
-            document.getElementById('mJabatan').innerText = p.jabatan;
-            document.getElementById('mJK').innerText = p.jenis_kelamin;
-            document.getElementById('mAlamat').innerText = p.alamat;
-            document.getElementById('mPend').innerText = p.pendidikan_terakhir;
-            document.getElementById('mBakti').innerText = p.masa_bakti;
-            document.getElementById('mFoto').src = '/storage/' + p.foto;
+        function showDetail(p) {
+            document.getElementById('mNama').innerText = p.nama || '-';
+            document.getElementById('mJabatan').innerText = p.jabatan || '-';
+            document.getElementById('mJK').innerText = p.jenis_kelamin || '-';
+            document.getElementById('mAlamat').innerText = p.alamat || '-';
+            document.getElementById('mPend').innerText = p.pendidikan_terakhir || '-';
+            document.getElementById('mBakti').innerText = p.masa_bakti || '-';
+
+            let baseUrl = window.location.origin + "/ponpes-khafidul-quran/public/storage/profiles/";
+
+            let fotoUrl = (p.foto && p.foto !== null) ?
+                baseUrl + p.foto :
+                baseUrl + "default.jpg";
+
+            console.log("URL Gambar:", fotoUrl);
+
+            let imgElement = document.getElementById('mFoto');
+            imgElement.src = fotoUrl;
+
             document.getElementById('modalDetail').classList.remove('hidden');
         }
 
