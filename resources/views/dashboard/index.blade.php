@@ -42,9 +42,11 @@
         <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="font-bold text-gray-700">Santri Terbaru</h3>
-                <a href="#"
-                    class="bg-yellow-50 text-yellow-700 text-sm hover:bg-yellow-100 px-4 py-2 rounded-lg">Lihat
-                    Semua</a>
+                @if (Auth::user()->role === 'super_admin' || Auth::user()->role === 'pengurus')
+                    <a href="{{ route('admin.santri') }}"
+                        class="bg-yellow-50 text-yellow-700 text-sm hover:bg-yellow-100 px-4 py-2 rounded-lg">Lihat
+                        Semua</a>
+                @endif
             </div>
             <table class="w-full text-left">
                 <thead>
@@ -79,17 +81,92 @@
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <h3 class="font-bold text-gray-700 mb-6">Aksi Cepat</h3>
             <div class="space-y-3">
-                <button
+                <button onclick="openTambahSantriModal()"
                     class="w-full text-left bg-emerald-50 text-emerald-700 p-3 rounded-lg hover:bg-emerald-100 transition">
                     <i class="fas fa-plus mr-2"></i> Tambah Santri
                 </button>
-                <button class="w-full text-left bg-blue-50 text-blue-700 p-3 rounded-lg hover:bg-blue-100 transition">
+
+                <button onclick="openTambahKajianModal()"
+                    class="w-full text-left bg-blue-50 text-blue-700 p-3 rounded-lg hover:bg-blue-100 transition">
                     <i class="fas fa-book mr-2"></i> Buat Kajian Baru
                 </button>
-                <button class="w-full text-left bg-purple-50 text-purple-700 p-3 rounded-lg hover:bg-purple-100 transition">
+
+                <button onclick="openUploadVideoModal()"
+                    class="w-full text-left bg-purple-50 text-purple-700 p-3 rounded-lg hover:bg-purple-100 transition">
                     <i class="fas fa-video mr-2"></i> Upload Video Galeri
                 </button>
             </div>
         </div>
+
+        <div id="modalSantri" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden">
+                <div class="bg-slate-800 text-white p-4 flex justify-between">
+                    <span class="font-bold">TAMBAH SANTRI</span>
+                    <button onclick="closeModal('modalSantri')">&times;</button>
+                </div>
+                <form action="{{ route('admin.santri.store') }}" method="POST">
+                    @csrf
+                    <div class="p-6 space-y-4">
+                        <input type="text" name="nama_santri" placeholder="Nama Lengkap"
+                            class="w-full border p-2 rounded" required>
+                        <input type="text" name="kode_santri" placeholder="Kode Santri" class="w-full border p-2 rounded"
+                            required>
+                    </div>
+                    <div class="p-4 bg-gray-50 text-right">
+                        <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="modalKajian" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden">
+                <div class="bg-blue-600 text-white p-4 flex justify-between">
+                    <span class="font-bold">BUAT KAJIAN BARU</span>
+                    <button onclick="closeModal('modalKajian')">&times;</button>
+                </div>
+                <form action="{{ route('admin.kajian.store') }}" method="POST">
+                    @csrf
+                    <div class="p-6 space-y-4">
+                        <input type="text" name="judul_kajian" placeholder="Judul Kajian"
+                            class="w-full border p-2 rounded" required>
+                        <textarea name="deskripsi" placeholder="Deskripsi" class="w-full border p-2 rounded"></textarea>
+                    </div>
+                    <div class="p-4 bg-gray-50 text-right">
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="modalVideo" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden">
+                <div class="bg-purple-600 text-white p-4 flex justify-between">
+                    <span class="font-bold">UPLOAD VIDEO GALERI</span>
+                    <button onclick="closeModal('modalVideo')">&times;</button>
+                </div>
+                <form action="{{ route('admin.video.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="p-6 space-y-4">
+                        <input type="text" name="judul_video" placeholder="Judul Video"
+                            class="w-full border p-2 rounded" required>
+                        <input type="file" name="video_file" class="w-full border p-2 rounded" required>
+                    </div>
+                    <div class="p-4 bg-gray-50 text-right">
+                        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+
+    <script>
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+    </script>
 @endsection
