@@ -10,7 +10,7 @@ class AlumniFactory extends Factory
     {
         return [
             'nama' => $this->faker->name(),
-            'kode_santri' => $this->faker->unique()->numerify('S-#####'),
+            'nisn' => $this->faker->unique()->numerify('######'),
             'jenis_kelamin' => $this->faker->randomElement(['Laki-laki', 'Perempuan']),
             'alamat' => $this->faker->address(),
             'angkatan' => $this->faker->year(),

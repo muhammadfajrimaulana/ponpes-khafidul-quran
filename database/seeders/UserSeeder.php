@@ -12,20 +12,20 @@ class UserSeeder extends Seeder
     {
         // Buat Super Admin
         User::create([
-            'name' => 'Super Admin Ponpes',
+            'name' => 'Super Admin',
             'email' => 'admin@khafidulquran.com',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make('min123'),
             'role' => 'super_admin',
-            'is_verified' => true,
+            'is_verified' => 'Terverifikasi',
         ]);
 
         // Buat Akun Pengurus untuk Testing
         User::create([
-            'name' => 'Pengurus Testing',
+            'name' => 'Khalid Alfian',
             'email' => 'pengurus@gmail.com',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make('tes123'),
             'role' => 'pengurus',
-            'is_verified' => false,
+            'is_verified' => 'Verifikasi Ditolak',
         ]);
     }
 }

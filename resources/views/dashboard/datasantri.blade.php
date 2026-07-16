@@ -98,7 +98,7 @@
             <h2 class="text-2xl font-bold text-gray-800">Data Santri</h2>
 
             <form action="{{ route('admin.santri') }}" method="GET" class="flex gap-2">
-                <input type="text" name="search" placeholder="Cari nama/kode..."
+                <input type="text" name="search" placeholder="Cari nama, kelas, angkatan, alamat santri..."
                     class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
                 <button type="submit" class="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-900">
                     <i class="fas fa-search"></i>

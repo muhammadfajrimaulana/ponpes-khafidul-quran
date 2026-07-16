@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
         <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div class="flex justify-between items-center mb-6">
@@ -53,27 +53,35 @@
                     <tr class="text-gray-400 text-sm border-b">
                         <th class="pb-3">Foto</th>
                         <th class="pb-3">Nama</th>
+                        <th class="pb-3">Kelas</th>
                         <th class="pb-3">Angkatan</th>
                         <th class="pb-3">Status</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-600">
-                    <tr>
-                        <td class="py-4"><img src="{{ asset('storage/profiles/default.jpg') }}" alt=""
-                                class="w-10 h-10 rounded-full object-cover"></td>
-                        <td class="py-4">Ahmad Fauzan</td>
-                        <td class="py-4">2024</td>
-                        <td class="py-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Aktif</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="py-4"><img src="{{ asset('storage/profiles/default.jpg') }}" alt=""
-                                class="w-10 h-10 rounded-full object-cover"></td>
-                        <td class="py-4">Muhammad Rizky</td>
-                        <td class="py-4">2023</td>
-                        <td class="py-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Aktif</span>
-                        </td>
-                    </tr>
+                    @foreach ($santri as $s)
+                        <tr>
+                            <td class="p-4">
+                                @php
+                                    $fotoPath = 'storage/profiles/' . $s->foto;
+                                    $fotoTersedia = !empty($s->foto) && file_exists(public_path($fotoPath));
+                                @endphp
+
+                                <img src="{{ $fotoTersedia ? asset($fotoPath) : asset('storage/profiles/default.jpg') }}"
+                                    alt="Foto {{ $s->nama_santri }}" class="w-10 h-10 rounded-full object-cover">
+                            </td>
+                            <td class="py-4">{{ $s->nama_santri }}</td>
+                            <td class="py-4">{{ $s->kelas }}</td>
+                            <td class="py-4">{{ $s->angkatan }}</td>
+                            <td class="py-4">
+                                @if ($s->status === 'aktif')
+                                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Aktif</span>
+                                @else
+                                    <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">Alumni</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -88,7 +96,7 @@
 
                 <button onclick="openTambahKajianModal()"
                     class="w-full text-left bg-blue-50 text-blue-700 p-3 rounded-lg hover:bg-blue-100 transition">
-                    <i class="fas fa-book mr-2"></i> Buat Kajian Baru
+                    <i class="fas fa-book mr-2"></i> Buat Berita Baru
                 </button>
 
                 <button onclick="openUploadVideoModal()"

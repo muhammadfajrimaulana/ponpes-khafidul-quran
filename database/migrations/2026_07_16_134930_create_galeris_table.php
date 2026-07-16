@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('galeris', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
+            $table->string('gambar')->nullable(); // untuk tipe 'foto'
             $table->string('tipe'); // 'foto' atau 'video'
             $table->string('link'); // link gambar atau embed link youtube/tiktok
             $table->timestamps();

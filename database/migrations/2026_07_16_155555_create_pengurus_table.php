@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('email')->nullable();
             $table->string('jabatan');
-            $table->string('jenis_kelamin');
+            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
             $table->string('foto')->nullable();
             $table->text('alamat');
             $table->text('visi')->nullable();
