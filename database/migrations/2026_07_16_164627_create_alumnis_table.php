@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('nama');
             $table->string('foto')->nullable();
             $table->string('angkatan');
-            $table->string('nama_wali');
-            $table->string('kontak_wali');
             $table->string('tahun_lulus');
             $table->string('pekerjaan')->nullable();
             $table->string('kampus')->nullable();
+            $table->string('nama_wali');
+            $table->string('kontak_wali');
             $table->timestamps();
         });
     }

@@ -39,12 +39,8 @@
                     @foreach ($alumni as $item)
                         <tr>
                             <td class="p-4">
-                                @if ($item->foto)
-                                    <img src="{{ asset('storage/' . $item->foto) }}" alt="Foto {{ $item->nama }}"
-                                        class="w-16 h-16 object-cover rounded-full">
-                                @else
-                                    <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
-                                @endif
+                                <img src="{{ asset('storage/profiles/' . $item->foto) ?? asset('storage/profiles/default.jpg') }}"
+                                    alt="Foto {{ $item->nama_santri }}" class="w-16 h-16 object-cover rounded-full">
                             </td>
                             <td class="p-4">{{ $item->nama }}</td>
                             <td class="p-4">{{ $item->tahun_lulus }}</td>
@@ -71,12 +67,23 @@
             <div class="p-6">
                 <div class="space-y-4">
                     <div class="flex justify-between border-b pb-2">
+                        <img id="sFoto" src="" alt="Foto" class="w-24 h-24 object-cover rounded-full">
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
                         <span class="text-gray-500">Nama Lengkap</span>
                         <span id="sNama" class="font-bold"></span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
                         <span class="text-gray-500">Kode Santri</span>
                         <span id="sKode" class="font-mono text-emerald-600 font-bold"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Nama Wali</span>
+                        <span id="sNamaWali" class="font-bold"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Kontak Wali</span>
+                        <span id="sKontakWali" class="font-bold"></span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
                         <span class="text-gray-500">Angkatan</span>
@@ -96,11 +103,20 @@
 
     <script>
         function showAlumniDetail(data) {
-            let a = JSON.parse(data);
-            document.getElementById('sNama').innerText = a.nama;
-            document.getElementById('sKode').innerText = a.kode_santri;
-            document.getElementById('sAngkatan').innerText = a.angkatan;
-            document.getElementById('sAlamat').innerText = a.alamat || '-';
+            let s = JSON.parse(data);
+
+            let baseUrl = "{{ asset('storage/profiles/') }}/";
+            let fotoUrl = s.foto ? baseUrl + s.foto : "{{ asset('storage/profiles/default.jpg') }}";
+
+            document.getElementById('sFoto').src = fotoUrl;
+            document.getElementById('sNama').innerText = s.nama;
+            document.getElementById('sKode').innerText = s.kode_santri || '-'; // Pastikan ambil dari s
+            document.getElementById('sNamaWali').innerText = s.nama_wali;
+            document.getElementById('sKontakWali').innerText = s.kontak_wali;
+
+            document.getElementById('sAngkatan').innerText = s.angkatan;
+            document.getElementById('sAlamat').innerText = s.alamat || '-';
+
             document.getElementById('modalAlumni').classList.remove('hidden');
         }
 

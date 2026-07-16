@@ -38,15 +38,11 @@
                     @foreach ($santri as $item)
                         <tr>
                             <td class="p-4">
-                                @if ($item->foto)
-                                    <img src="{{ asset('storage/' . $item->foto) }}" alt="Foto {{ $item->nama }}"
-                                        class="w-16 h-16 object-cover rounded-full">
-                                @else
-                                    <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
-                                @endif
+                                <img src="{{ asset('storage/profiles/' . $item->foto) ?? asset('storage/profiles/default.jpg') }}"
+                                    alt="Foto {{ $item->nama_santri }}" class="w-16 h-16 object-cover rounded-full">
                             </td>
                             <td class="p-4 font-mono text-emerald-600">{{ $item->kode_santri }}</td>
-                            <td class="p-4">{{ $item->nama }}</td>
+                            <td class="p-4">{{ $item->nama_santri }}</td>
                             <td class="p-4">{{ $item->angkatan }}</td>
                             <td class="p-4">{{ $item->alamat }}</td>
                             <td class="p-4">
@@ -76,6 +72,9 @@
             </div>
             <div class="p-6">
                 <div class="space-y-4">
+                    <div class="flex justify-center border-b pb-4">
+                        <img id="sFoto" src="" alt="Foto" class="w-24 h-24 object-cover rounded-full">
+                    </div>
                     <div class="flex justify-between border-b pb-2">
                         <span class="text-gray-500">Nama Lengkap</span>
                         <span id="sNama" class="font-bold"></span>
@@ -83,6 +82,14 @@
                     <div class="flex justify-between border-b pb-2">
                         <span class="text-gray-500">Kode Santri</span>
                         <span id="sKode" class="font-mono text-emerald-600 font-bold"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Nama Wali</span>
+                        <span id="sNamaWali" class="font-bold"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Kontak Wali</span>
+                        <span id="sKontakWali" class="font-bold"></span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
                         <span class="text-gray-500">Angkatan</span>
@@ -99,9 +106,17 @@
     <script>
         function showSantriDetail(data) {
             let s = JSON.parse(data);
-            document.getElementById('sNama').innerText = s.nama;
+
+            let baseUrl = "{{ asset('storage/profiles/') }}/";
+            let fotoUrl = s.foto ? baseUrl + s.foto : "{{ asset('storage/profiles/default.jpg') }}";
+
+            document.getElementById('sFoto').src = fotoUrl;
+            document.getElementById('sNama').innerText = s.nama_santri;
             document.getElementById('sKode').innerText = s.kode_santri;
+            document.getElementById('sNamaWali').innerText = s.nama_wali;
+            document.getElementById('sKontakWali').innerText = s.kontak_wali;
             document.getElementById('sAngkatan').innerText = s.angkatan;
+
             document.getElementById('modalSantri').classList.remove('hidden');
         }
 

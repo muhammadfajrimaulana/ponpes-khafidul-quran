@@ -18,6 +18,7 @@
             <table class="w-full text-left">
                 <thead class="bg-gray-50 text-gray-600">
                     <tr>
+                        <th class="p-4">Foto</th>
                         <th class="p-4">Nama</th>
                         <th class="p-4">Email</th>
                         <th class="p-4">Jabatan</th>
@@ -29,9 +30,10 @@
                     @foreach ($pengurus as $p)
                         <tr>
                             <td class="p-4 flex items-center gap-3">
-                                <img src="{{ asset('storage/' . $p->foto) }}" class="w-10 h-10 rounded-full object-cover">
-                                {{ $p->nama }}
+                                <img src="{{ asset('storage/profiles/' . $p->foto) }}"
+                                    class="w-10 h-10 rounded-full object-cover">
                             </td>
+                            <td class="p-4">{{ $p->nama }}</td>
                             <td class="p-4">{{ $p->email }}</td>
                             <td class="p-4">{{ $p->jabatan }}</td>
                             <td class="p-4">{{ $p->alamat }}</td>

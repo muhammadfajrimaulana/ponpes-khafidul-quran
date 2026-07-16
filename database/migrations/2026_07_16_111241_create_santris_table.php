@@ -14,9 +14,13 @@ return new class extends Migration
         Schema::create('santris', function (Blueprint $table) {
             $table->id();
             $table->string('nama_santri');
+            $table->string('foto')->nullable();
             $table->string('kode_santri')->unique(); // Untuk kartu santri
             $table->string('kode_sandi');            // Password untuk akses kartu
+            $table->string('nama_wali');
+            $table->string('kontak_wali');
             $table->string('angkatan');              // Filter per angkatan
+            $table->string('alamat');                // Alamat santri
             $table->enum('status', ['aktif', 'alumni'])->default('aktif');
             $table->timestamps();
         });

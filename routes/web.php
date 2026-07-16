@@ -57,32 +57,30 @@ Route::get('/video', function () {
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 
+Route::middleware(['auth'])->group(function () {
 
-Route::get('/profile.edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::put('/profile.update', [ProfileController::class, 'update'])->name('profile.update');
-Route::delete('/profile.destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Profile Routes
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-// Halaman yang bisa diakses setelah login & diverifikasi
-Route::middleware(['auth', 'verified'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/dashboard', [App\Http\Controllers\Dashboard\DashboardController::class, 'index'])->name('dashboard');
-    // Rute khusus Super Admin
+    // Rute Admin & Pengurus (tetap seperti yang kamu buat)
     Route::middleware(['role:super_admin'])->group(function () {
-        Route::get('/admin/pengurus', [App\Http\Controllers\Dashboard\PengurusController::class, 'index'])->name('admin.pengurus');
-        // Tambahkan rute admin lainnya di sini
-        Route::get('/admin/santri', [App\Http\Controllers\Dashboard\SantriController::class, 'index'])->name('admin.santri');
-        Route::get('/admin/alumni', [App\Http\Controllers\Dashboard\AlumniController::class, 'index'])->name('admin.alumni');
-        Route::get('/admin/berita', [App\Http\Controllers\Dashboard\BeritaController::class, 'index'])->name('admin.berita');
-        Route::get('/admin/galeri', [App\Http\Controllers\Dashboard\GaleriController::class, 'index'])->name('admin.galeri');
+        Route::get('/admin/pengurus', [PengurusController::class, 'index'])->name('admin.pengurus');
+        Route::get('/admin/santri', [SantriController::class, 'index'])->name('admin.santri');
+        Route::get('/admin/alumni', [AlumniController::class, 'index'])->name('admin.alumni');
+        Route::get('/admin/berita', [BeritaController::class, 'index'])->name('admin.berita');
+        Route::get('/admin/galeri', [GaleriController::class, 'index'])->name('admin.galeri');
     });
 
-    // Rute khusus Pengurus
     Route::middleware(['role:pengurus'])->group(function () {
-        Route::get('/pengurus/santri', [App\Http\Controllers\Dashboard\SantriController::class, 'index'])->name('pengurus.santri');
-        // Tambahkan rute pengurus lainnya di sini
-        Route::get('/pengurus/alumni', [App\Http\Controllers\Dashboard\AlumniController::class, 'index'])->name('pengurus.alumni');
-        Route::get('/pengurus/berita', [App\Http\Controllers\Dashboard\BeritaController::class, 'index'])->name('pengurus.berita');
-        Route::get('/pengurus/galeri', [App\Http\Controllers\Dashboard\GaleriController::class, 'index'])->name('pengurus.galeri');
+        Route::get('/pengurus/santri', [SantriController::class, 'index'])->name('pengurus.santri');
+        Route::get('/pengurus/alumni', [AlumniController::class, 'index'])->name('pengurus.alumni');
+        Route::get('/pengurus/berita', [BeritaController::class, 'index'])->name('pengurus.berita');
+        Route::get('/pengurus/galeri', [GaleriController::class, 'index'])->name('pengurus.galeri');
     });
 });
 
