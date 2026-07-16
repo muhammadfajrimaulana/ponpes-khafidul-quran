@@ -1,17 +1,30 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Manajemen Kepengurusan</h2>
-        <p class="text-gray-500 text-sm">Kelola data pengurus pondok pesantren di sini.</p>
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">Manajemen Kepengurusan</h2>
+            <p class="text-gray-500 text-sm">Kelola data pengurus pondok pesantren di sini.</p>
+        </div>
+
+        <div>
+            <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700">
+                <i class="fas fa-plus mr-2"></i> Tambah Pengurus
+            </button>
+        </div>
     </div>
 
     <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Data Pengurus</h2>
-            <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700">
-                <i class="fas fa-plus mr-2"></i> Tambah Pengurus
-            </button>
+
+            <form action="{{ route('admin.pengurus') }}" method="GET" class="flex gap-2">
+                <input type="text" name="search" placeholder="Cari nama, kontak, alamat..."
+                    class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+                <button type="submit" class="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-900">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
         </div>
 
         <div class="overflow-x-auto">

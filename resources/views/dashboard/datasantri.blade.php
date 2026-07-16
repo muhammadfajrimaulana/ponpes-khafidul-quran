@@ -1,9 +1,17 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Manajemen Santri</h2>
-        <p class="text-gray-500 text-sm">Kelola data santri pondok pesantren di sini.</p>
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">Manajemen Santri</h2>
+            <p class="text-gray-500 text-sm">Kelola data santri pondok pesantren di sini.</p>
+        </div>
+
+        <div>
+            <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700">
+                <i class="fas fa-plus mr-2"></i> Tambah Santri
+            </button>
+        </div>
     </div>
 
     <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
