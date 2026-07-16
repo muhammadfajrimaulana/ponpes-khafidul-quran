@@ -10,8 +10,8 @@ class SantriFactory extends Factory
     {
         return [
             'nama_santri' => $this->faker->name(),
-            'kode_santri' => $this->faker->unique()->numerify('S-#####'),
-            'kode_sandi' => $this->faker->password(8, 16),
+            'nisn' => $this->faker->unique()->numerify('######'),
+            'kelas' => $this->faker->randomElement(['X / 1 MA', 'XI / 2 MA', 'XII / 3 MA', 'VII / 1 MTs', 'VIII / 2 MTs', 'IX / 3 MTs']),
             'jenis_kelamin' => $this->faker->randomElement(['Laki-laki', 'Perempuan']),
             'alamat' => $this->faker->address(),
             'status' => $this->faker->randomElement(['aktif', 'alumni']),

@@ -13,9 +13,82 @@
         </div>
 
         <div>
-            <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700">
+            <button onclick="openCreateModal()" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700">
                 <i class="fas fa-plus mr-2"></i> Tambah Santri
             </button>
+        </div>
+    </div>
+
+    <div id="modalCreateSantri"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white rounded-2xl w-full max-w-2xl shadow-2xl transform transition-all">
+            <!-- Header -->
+            <div class="bg-slate-800 text-white p-6 flex justify-between items-center rounded-t-2xl">
+                <h3 class="font-bold text-lg tracking-wide">TAMBAH SANTRI BARU</h3>
+                <button onclick="closeCreateModal('modalCreateSantri')"
+                    class="text-white/70 hover:text-white transition text-2xl">&times;</button>
+            </div>
+
+            <form action="{{ route('admin.store-santri') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <!-- Form Body -->
+                <div class="p-6 md:p-8 space-y-5">
+                    <!-- Foto Upload (Gaya Modern) -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Pas Foto</label>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center border border-dashed border-gray-300">
+                                <i class="fas fa-camera text-gray-400"></i>
+                            </div>
+                            <input type="file" name="foto"
+                                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                        </div>
+                    </div>
+
+                    <!-- Grid Input -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" name="nama_santri" placeholder="Nama Lengkap"
+                            class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition"
+                            required>
+                        <input type="number" name="nisn" placeholder="NISN"
+                            class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition"
+                            required>
+                        <select name="kelas"
+                            class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition">
+                            <option value="">Kelas</option>
+                            <option value="1 MTs">VII / 1 MTs</option>
+                            <option value="2 MTs">VIII / 2 MTs</option>
+                            <option value="3 MTs">IX / 3 MTs</option>
+                            <option value="1 MA">X / 1 MA</option>
+                            <option value="2 MA">XI / 2 MA</option>
+                            <option value="3 MA">XII / 3 MA</option>
+                        </select>
+
+                        <input type="number" name="angkatan" placeholder="Angkatan"
+                            class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition">
+
+                        <input type="text" name="nama_wali" placeholder="Nama Wali"
+                            class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition"
+                            required>
+                        <input type="number" name="kontak_wali" placeholder="Kontak Wali"
+                            class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition">
+                    </div>
+
+                    <textarea name="alamat" placeholder="Alamat Lengkap" rows="2"
+                        class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition" required></textarea>
+                </div>
+
+                <!-- Footer -->
+                <div class="p-6 bg-gray-50 rounded-b-2xl flex justify-end gap-3">
+                    <button type="button" onclick="closeCreateModal('modalCreateSantri')"
+                        class="px-6 py-2 rounded-lg text-gray-600 hover:bg-gray-200 transition">Batal</button>
+                    <button type="submit"
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-2 rounded-lg shadow-lg hover:shadow-emerald-500/30 transition-all font-bold">
+                        Simpan
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -39,8 +112,8 @@
                 <thead class="bg-gray-50 text-gray-600">
                     <tr>
                         <th class="p-4">Foto</th>
-                        <th class="p-4">NISN</th>
                         <th class="p-4">Nama</th>
+                        <th class="p-4">Kelas</th>
                         <th class="p-4">Angkatan</th>
                         <th class="p-4">Alamat</th>
                         <th class="p-4">Status</th>
@@ -59,8 +132,8 @@
                                 <img src="{{ $fotoTersedia ? asset($fotoPath) : asset('storage/profiles/default.jpg') }}"
                                     alt="Foto {{ $item->nama_santri }}" class="w-10 h-10 rounded-full object-cover">
                             </td>
-                            <td class="p-4 font-mono text-emerald-600">{{ $item->kode_santri }}</td>
                             <td class="p-4">{{ $item->nama_santri }}</td>
+                            <td class="p-4">{{ $item->kelas }}</td>
                             <td class="p-4">{{ $item->angkatan }}</td>
                             <td class="p-4">{{ $item->alamat }}</td>
                             <td class="p-4">
@@ -98,8 +171,12 @@
                         <span id="sNama" class="font-bold"></span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
-                        <span class="text-gray-500">Kode Santri</span>
-                        <span id="sKode" class="font-mono text-emerald-600 font-bold"></span>
+                        <span class="text-gray-500">NISN</span>
+                        <span id="sNisn" class="font-mono text-emerald-600 font-bold"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Kelas</span>
+                        <span id="sKelas" class="font-bold"></span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
                         <span class="text-gray-500">Nama Wali</span>
@@ -122,9 +199,15 @@
     </div>
 
     <script>
-        function showSantriDetail(s) {
+        function openCreateModal() {
+            document.getElementById('modalCreateSantri').classList.remove('hidden');
+        }
 
-            console.log(s);
+        function closeCreateModal() {
+            document.getElementById('modalCreateSantri').classList.add('hidden');
+        }
+
+        function showSantriDetail(s) {
 
             let baseUrl = "{{ asset('storage/profiles/') }}/";
             let fotoUrl = s.foto ? baseUrl + s.foto : "{{ asset('storage/profiles/default.jpg') }}";
@@ -132,7 +215,8 @@
             document.getElementById('sFoto').src = fotoUrl;
 
             document.getElementById('sNama').innerText = s.nama_santri || '-';
-            document.getElementById('sKode').innerText = s.kode_santri || '-';
+            document.getElementById('sNisn').innerText = s.nisn || '-';
+            document.getElementById('sKelas').innerText = s.kelas || '-';
             document.getElementById('sNamaWali').innerText = s.nama_wali || '-';
             document.getElementById('sKontakWali').innerText = s.kontak_wali || '-';
             document.getElementById('sAngkatan').innerText = s.angkatan || '-';

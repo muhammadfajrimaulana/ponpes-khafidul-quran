@@ -10,5 +10,5 @@ class Santri extends Model
     /** @use HasFactory<\Database\Factories\PengurusFactory> */
     use HasFactory;
     protected $table = 'santris';
-    protected $fillable = ['nama', 'foto', 'nama_wali', 'kontak_wali', 'kode_santri', 'angkatan', 'alamat', 'status'];
+    protected $fillable = ['nama', 'foto', 'nama_wali', 'kontak_wali', 'nisn', 'kelas', 'angkatan', 'alamat', 'status'];
 }

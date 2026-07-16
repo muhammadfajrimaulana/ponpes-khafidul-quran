@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('nama_santri');
             $table->string('foto')->nullable();
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
-            $table->string('kode_santri')->unique(); // Untuk kartu santri
-            $table->string('kode_sandi');            // Password untuk akses kartu
+            $table->string('nisn')->unique();
+            $table->string('kelas');
             $table->string('nama_wali');
             $table->string('kontak_wali');
             $table->string('angkatan');              // Filter per angkatan

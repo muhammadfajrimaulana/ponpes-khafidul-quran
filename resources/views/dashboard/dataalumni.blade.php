@@ -76,7 +76,7 @@
             </div>
             <div class="p-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between border-b pb-2">
+                    <div class="flex justify-center border-b pb-4">
                         <img id="sFoto" src="" alt="Foto" class="w-24 h-24 object-cover rounded-full">
                     </div>
                     <div class="flex justify-between border-b pb-2">

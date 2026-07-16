@@ -104,13 +104,22 @@
                     <span class="font-bold">TAMBAH SANTRI</span>
                     <button onclick="closeModal('modalSantri')">&times;</button>
                 </div>
-                <form action="{{ route('admin.santri.store') }}" method="POST">
+                <form action="{{ route('admin.store-santri') }}" method="POST">
                     @csrf
                     <div class="p-6 space-y-4">
+                        <div>
+                            <label for="foto" class="text-gray-400">Upload Pas Foto</label>
+                            <input type="file" name="foto" class="w-full border p-2 mt-2 rounded" required>
+                        </div>
                         <input type="text" name="nama_santri" placeholder="Nama Lengkap"
                             class="w-full border p-2 rounded" required>
-                        <input type="text" name="kode_santri" placeholder="Kode Santri" class="w-full border p-2 rounded"
-                            required>
+                        <input type="text" name="nama_wali" placeholder="Nama Wali" class="w-full border p-2 rounded">
+                        <input type="number" name="kontak_wali" placeholder="Kontak Wali"
+                            class="w-full border p-2 rounded">
+                        <input type="number" name="angkatan" placeholder="Angkatan" maxlength="4" minlength="4"
+                            class="w-full border p-2 rounded" required>
+                        <textarea name="alamat" placeholder="Alamat" class="w-full border p-2 rounded" required></textarea>
+
                     </div>
                     <div class="p-4 bg-gray-50 text-right">
                         <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded">Simpan</button>
@@ -122,13 +131,13 @@
         <div id="modalKajian" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
             <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden">
                 <div class="bg-blue-600 text-white p-4 flex justify-between">
-                    <span class="font-bold">BUAT KAJIAN BARU</span>
+                    <span class="font-bold">BUAT BERITA BARU</span>
                     <button onclick="closeModal('modalKajian')">&times;</button>
                 </div>
-                <form action="{{ route('admin.kajian.store') }}" method="POST">
+                <form action="{{ route('admin.store-berita') }}" method="POST">
                     @csrf
                     <div class="p-6 space-y-4">
-                        <input type="text" name="judul_kajian" placeholder="Judul Kajian"
+                        <input type="text" name="judul_berita" placeholder="Judul Berita"
                             class="w-full border p-2 rounded" required>
                         <textarea name="deskripsi" placeholder="Deskripsi" class="w-full border p-2 rounded"></textarea>
                     </div>
@@ -145,7 +154,7 @@
                     <span class="font-bold">UPLOAD VIDEO GALERI</span>
                     <button onclick="closeModal('modalVideo')">&times;</button>
                 </div>
-                <form action="{{ route('admin.video.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.store-galeri') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="p-6 space-y-4">
                         <input type="text" name="judul_video" placeholder="Judul Video"
@@ -161,6 +170,18 @@
     </div>
 
     <script>
+        function openTambahSantriModal() {
+            openModal('modalSantri');
+        }
+
+        function openTambahKajianModal() {
+            openModal('modalKajian');
+        }
+
+        function openUploadVideoModal() {
+            openModal('modalVideo');
+        }
+
         function openModal(id) {
             document.getElementById(id).classList.remove('hidden');
         }
