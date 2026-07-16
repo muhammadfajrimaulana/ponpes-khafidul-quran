@@ -1,5 +1,10 @@
 @extends('layouts.dashboard')
 
+@section('icon')
+    <i class="fas fa-user-clock text-slate-900 mr-4 mt-1"></i>
+@endsection
+@section('title', 'Data Alumni')
+
 @section('content')
     <div class="mb-6">
         <h2 class="text-2xl font-bold text-gray-800">Manajemen Alumni</h2>

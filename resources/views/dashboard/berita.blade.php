@@ -1,5 +1,10 @@
 @extends('layouts.dashboard')
 
+@section('icon')
+    <i class="fas fa-pen-nib text-slate-900 mr-4 mt-1"></i>
+@endsection
+@section('title', 'Berita/Kajian')
+
 @section('content')
     <div class="flex justify-between items-center mb-6">
         <div>

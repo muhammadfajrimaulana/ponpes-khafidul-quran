@@ -1,5 +1,10 @@
 @extends('layouts.dashboard')
 
+@section('icon')
+    <i class="fas fa-chart-line text-slate-900 mr-4 mt-1"></i>
+@endsection
+@section('title', 'Dashboard')
+
 @section('content')
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center">
@@ -37,11 +42,14 @@
         <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="font-bold text-gray-700">Santri Terbaru</h3>
-                <a href="#" class="text-emerald-600 text-sm hover:underline">Lihat Semua</a>
+                <a href="#"
+                    class="bg-yellow-50 text-yellow-700 text-sm hover:bg-yellow-100 px-4 py-2 rounded-lg">Lihat
+                    Semua</a>
             </div>
             <table class="w-full text-left">
                 <thead>
                     <tr class="text-gray-400 text-sm border-b">
+                        <th class="pb-3">Foto</th>
                         <th class="pb-3">Nama</th>
                         <th class="pb-3">Angkatan</th>
                         <th class="pb-3">Status</th>
@@ -49,12 +57,16 @@
                 </thead>
                 <tbody class="text-gray-600">
                     <tr>
+                        <td class="py-4"><img src="{{ asset('storage/profiles/default.jpg') }}" alt=""
+                                class="w-10 h-10 rounded-full object-cover"></td>
                         <td class="py-4">Ahmad Fauzan</td>
                         <td class="py-4">2024</td>
                         <td class="py-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Aktif</span>
                         </td>
                     </tr>
                     <tr>
+                        <td class="py-4"><img src="{{ asset('storage/profiles/default.jpg') }}" alt=""
+                                class="w-10 h-10 rounded-full object-cover"></td>
                         <td class="py-4">Muhammad Rizky</td>
                         <td class="py-4">2023</td>
                         <td class="py-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Aktif</span>

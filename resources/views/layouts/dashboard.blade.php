@@ -89,8 +89,14 @@
         </aside>
 
         <div class="flex-1 ml-64">
-            <header x-data="{ open: false }" class="bg-white shadow-sm py-4 px-8 flex justify-between items-center">
-                <h3 class="font-bold text-gray-700">Dashboard Admin</h3>
+            <nav x-data="{ open: false }" class="bg-white shadow-sm py-4 px-8 flex justify-between items-center">
+                <div class="flex mr-2">
+                    @yield('icon')
+
+                    <h3 class="font-bold text-gray-700">
+                        @yield('title', 'Dashboard')
+                    </h3>
+                </div>
 
                 <div class="hidden sm:flex sm:items-center sm:ms-6">
                     <x-dropdown align="right" width="48">
@@ -122,7 +128,7 @@
                                 <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                    {{ __('Log Out') }}
+                                    {{ __('Logout') }}
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
@@ -176,7 +182,7 @@
                         </div>
                     </div>
                 </div>
-            </header>
+            </nav>
 
             <main class="p-8">
                 @yield('content')
