@@ -25,8 +25,21 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
+
+        // Check verification status
+        $user = Auth::user();
+
+        if ($user->role !== 'super_admin' && !$user->is_verified) {
+            Auth::guard('web')->logout(); // Gunakan Auth::guard('web')->logout()
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()->withErrors([
+                'email' => 'Your account is not verified by Super Admin.',
+            ]);
+        }
 
         return redirect()->intended(route('dashboard', absolute: false));
     }

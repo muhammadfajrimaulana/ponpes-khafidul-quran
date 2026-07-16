@@ -53,7 +53,7 @@
                     <a class="text-light me-3 text-decoration-none small" href=""><i
                             class="fab fa-tiktok"></i></a>
                     <span class="text-light me-3">|</span>
-                    <a class="btn btn-sm btn-outline-light px-3 py-1 text-uppercase fw-bold" href="#"
+                    <a class="btn btn-sm btn-outline-light px-3 py-1 text-uppercase fw-bold" href="{{ route('login') }}"
                         style="font-size: 0.75rem; border-radius: 4px;">Portal Login</a>
                 </div>
             </div>
