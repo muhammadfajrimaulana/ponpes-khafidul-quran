@@ -15,45 +15,32 @@ Route::get('/', function () {
     return view('web.index');
 });
 
-Route::get('/beranda', function () {
-    return view('web.index');
-})->name('beranda');
-Route::get('/contact', function () {
-    return view('web.contact');
-})->name('contact');
-Route::get('/sejarah', function () {
-    return view('web.profil.Sejarah');
-})->name('sejarah');
-Route::get('/visi', function () {
-    return view('web.profil.Visi');
-})->name('visi');
-Route::get('/pengurus', function () {
-    return view('web.profil.datapengurus');
-})->name('pengurus');
-Route::get('/madrasah-tsanawiyah', function () {
-    return view('web.jenjang.mts');
-})->name('madrasah-tsanawiyah');
-Route::get('/madrasah-aliyah', function () {
-    return view('web.jenjang.mah');
-})->name('madrasah-aliyah');
-Route::get('/kabar-pondok', function () {
-    return view('web.berita.kabarpondok');
-})->name('kabar-pondok');
-Route::get('/artikel', function () {
-    return view('web.berita.artikel');
-})->name('artikel');
-Route::get('/santri', function () {
-    return view('web.dokumen.datasantri');
-})->name('santri');
-Route::get('/alumni', function () {
-    return view('web.dokumen.dataalumni');
-})->name('alumni');
-Route::get('/foto', function () {
-    return view('web.galeri.foto');
-})->name('foto');
-Route::get('/video', function () {
-    return view('web.galeri.video');
-})->name('video');
+Route::get('/beranda', [App\Http\Controllers\Web\MenuController::class, 'index'])
+    ->name('beranda');
+Route::get('/contact', [App\Http\Controllers\Web\MenuController::class, 'contact'])
+    ->name('contact');
+Route::get('/sejarah', [App\Http\Controllers\Web\MenuController::class, 'sejarah'])
+    ->name('sejarah');
+Route::get('/visi', [App\Http\Controllers\Web\MenuController::class, 'visi'])
+    ->name('visi');
+Route::get('/pengurus', [App\Http\Controllers\Web\MenuController::class, 'pengurus'])
+    ->name('pengurus');
+Route::get('/madrasah-tsanawiyah', [App\Http\Controllers\Web\MenuController::class, 'mts'])
+    ->name('madrasah-tsanawiyah');
+Route::get('/madrasah-aliyah', [App\Http\Controllers\Web\MenuController::class, 'ma'])
+    ->name('madrasah-aliyah');
+Route::get('/kabar-pondok', [App\Http\Controllers\Web\MenuController::class, 'berita'])
+    ->name('kabar-pondok');
+Route::get('/artikel', [App\Http\Controllers\Web\MenuController::class, 'artikel'])
+    ->name('artikel');
+Route::get('/santri', [App\Http\Controllers\Web\MenuController::class, 'santri'])
+    ->name('santri');
+Route::get('/alumni', [App\Http\Controllers\Web\MenuController::class, 'alumni'])
+    ->name('alumni');
+Route::get('/foto', [App\Http\Controllers\Web\MenuController::class, 'foto'])
+    ->name('foto');
+Route::get('/video', [App\Http\Controllers\Web\MenuController::class, 'video'])
+    ->name('video');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 
