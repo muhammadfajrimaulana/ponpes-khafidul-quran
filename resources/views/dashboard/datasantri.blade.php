@@ -6,6 +6,16 @@
 @section('title', 'Data Santri')
 
 @section('content')
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="flex justify-between items-center mb-6">
         <div>
             <h2 class="text-2xl font-bold text-gray-800">Manajemen Santri</h2>
@@ -65,14 +75,29 @@
                             <option value="3 MA">XII / 3 MA</option>
                         </select>
 
-                        <input type="number" name="angkatan" placeholder="Angkatan"
+                        <select name="jenis_kelamin"
                             class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition">
+                            <option value="">Jenis Kelamin</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
 
                         <input type="text" name="nama_wali" placeholder="Nama Wali"
                             class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition"
                             required>
                         <input type="number" name="kontak_wali" placeholder="Kontak Wali"
                             class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition">
+
+                        <input type="number" name="angkatan" placeholder="Angkatan"
+                            class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition">
+
+                        <select name="status"
+                            class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition">
+                            <option value="">Status</option>
+                            <option value="aktif">Aktif</option>
+                            <option value="alumni">Alumni</option>
+                            <option value="nonaktif">Non-Aktif</option>
+                        </select>
                     </div>
 
                     <textarea name="alamat" placeholder="Alamat Lengkap" rows="2"
@@ -150,6 +175,12 @@
                             </td>
                         </tr>
                     @endforeach
+
+                    @if ($santri->isEmpty())
+                        <tr>
+                            <td colspan="7" class="p-4 text-center text-gray-400">Belum ada data santri saat ini.</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -177,6 +208,10 @@
                     <div class="flex justify-between border-b pb-2">
                         <span class="text-gray-500">Kelas</span>
                         <span id="sKelas" class="font-bold"></span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Jenis Kelamin</span>
+                        <span id="sJenisKelamin" class="font-bold"></span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
                         <span class="text-gray-500">Nama Wali</span>
@@ -220,7 +255,7 @@
             document.getElementById('sNamaWali').innerText = s.nama_wali || '-';
             document.getElementById('sKontakWali').innerText = s.kontak_wali || '-';
             document.getElementById('sAngkatan').innerText = s.angkatan || '-';
-
+            document.getElementById('sJenisKelamin').innerText = s.jenis_kelamin || '-';
             document.getElementById('modalSantri').classList.remove('hidden');
         }
 

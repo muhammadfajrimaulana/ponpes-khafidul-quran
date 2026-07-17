@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
             'email' => 'pengurus@gmail.com',
             'password' => Hash::make('tes123'),
             'role' => 'pengurus',
-            'is_verified' => 'Verifikasi Ditolak',
+            'is_verified' => 'Menunggu Verifikasi',
         ]);
     }
 }

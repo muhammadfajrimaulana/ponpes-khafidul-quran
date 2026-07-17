@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('kontak_wali');
             $table->string('angkatan');              // Filter per angkatan
             $table->string('alamat');                // Alamat santri
-            $table->enum('status', ['aktif', 'alumni'])->default('aktif');
+            $table->enum('status', ['aktif', 'alumni', 'nonaktif'])->default('aktif');
             $table->timestamps();
         });
     }

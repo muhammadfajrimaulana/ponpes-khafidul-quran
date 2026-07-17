@@ -115,8 +115,7 @@
                         <th class="p-4">Foto</th>
                         <th class="p-4">Nama</th>
                         <th class="p-4">Email</th>
-                        <th class="p-4">Jabatan</th>
-                        <th class="p-4">Alamat</th>
+                        <th class="p-4">Status</th>
                         <th class="p-4">Aksi</th>
                     </tr>
                 </thead>
@@ -134,22 +133,43 @@
                             </td>
                             <td class="p-4">{{ $p->nama }}</td>
                             <td class="p-4">{{ $p->email }}</td>
-                            <td class="p-4">{{ $p->jabatan }}</td>
-                            <td class="p-4">{{ $p->alamat }}</td>
+                            <td class="p-4">
+                                @if ($p->is_verified)
+                                    <span
+                                        class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">Terverifikasi</span>
+                                @elseif ($p->is_verified === 'Verifikasi Ditolak')
+                                    <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">Verifikasi
+                                        Ditolak</span>
+                                @else
+                                    <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">Menunggu
+                                        Verifikasi</span>
+                                @endif
+                            </td>
                             <td class="p-4">
                                 <button onclick='showDetail(@json($p))'
-                                    class="text-blue-600 hover:text-blue-800 font-bold transition">
-                                    Detail
+                                    class="bg-emerald-600 text-white px-2 py-1 rounded-lg hover:bg-emerald-700">
+                                    <i class="fas fa-eye text-sm"></i>
                                 </button>
-                                <button class="text-blue-600 hover:underline ml-3">Edit</button>
+                                <button onclick='showEditForm(@json($p))'
+                                    class="bg-blue-600 text-white px-2 py-1 rounded-lg hover:bg-blue-700 ml-3">
+                                    <i class="fas fa-edit text-sm"></i>
+                                </button>
                             </td>
                         </tr>
                     @endforeach
+
+                    @if ($pengurus->isEmpty())
+                        <tr>
+                            <td colspan="6" class="p-4 text-center text-gray-400">Belum ada data pengurus saat ini.
+                            </td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
     </div>
 
+    {{-- Modal Detail --}}
     <div id="modalDetail" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden">
             <div class="bg-slate-800 text-white p-4 flex justify-between items-center">
@@ -169,6 +189,9 @@
                     <div class="flex justify-between"><span>Alamat</span> <span id="mAlamat"
                             class="font-semibold"></span>
                     </div>
+                    <div class="flex justify-between"><span>Nomor HP</span> <span id="mNoHP"
+                            class="font-semibold"></span>
+                    </div>
                     <div class="flex justify-between"><span>Pendidikan</span> <span id="mPend"
                             class="font-semibold"></span></div>
                     <div class="flex justify-between"><span>Masa Bakti</span> <span id="mBakti"
@@ -178,6 +201,59 @@
             <div class="p-4 bg-gray-50 text-right">
                 <button onclick="closeModal('modalDetail')"
                     class="bg-emerald-600 text-white px-6 py-2 rounded-lg">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Edit --}}
+    <div id="modalEdit" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden">
+            <div class="bg-slate-800 text-white p-4 flex justify-between items-center">
+                <span class="font-bold">EDIT PENGURUS</span>
+                <button onclick="closeModal('modalEdit')" class="text-xl">&times;</button>
+            </div>
+            <div class="p-6">
+                <!-- Form for editing pengurus data -->
+                <form id="editPengurusForm" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="space-y-4">
+                        <input type="text" name="nama" id="eNama" class="w-full border-gray-300 rounded-lg"
+                            required>
+                        <input type="text" name="jabatan" id="eJabatan" class="w-full border-gray-300 rounded-lg"
+                            required>
+
+                        <select name="jenis_kelamin" id="eJK" class="w-full border-gray-300 rounded-lg">
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+
+                        <input type="text" name="pendidikan_terakhir" id="ePend"
+                            class="w-full border-gray-300 rounded-lg">
+                        <input type="email" name="email" id="eEmail" class="w-full border-gray-300 rounded-lg"
+                            required>
+                        <input type="number" name="no_hp" id="eNoHP" class="w-full border-gray-300 rounded-lg">
+                        <input type="text" name="masa_bakti" id="eBakti" class="w-full border-gray-300 rounded-lg"
+                            required>
+
+                        <!-- Pastikan textarea ditutup dengan benar -->
+                        <textarea name="alamat" id="eAlamat" rows="2" class="w-full border-gray-300 rounded-lg"></textarea>
+                        <select name="status" id="eStatus" class="w-full border-gray-300 rounded-lg">
+                            <option value="Terverifikasi">Terverifikasi</option>
+                            <option value="Verifikasi Ditolak">Verifikasi Ditolak</option>
+                            <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+                        </select>
+                    </div>
+
+                    <!-- Tombol Simpan -->
+                    <div class="mt-6 flex justify-end gap-3">
+                        <button type="button" onclick="closeModal('modalEdit')"
+                            class="px-4 py-2 text-gray-600">Batal</button>
+                        <button type="submit" class="bg-emerald-600 text-white px-6 py-2 rounded-lg font-bold">Simpan
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -200,6 +276,7 @@
             document.getElementById('mJabatan').innerText = p.jabatan || '-';
             document.getElementById('mJK').innerText = p.jenis_kelamin || '-';
             document.getElementById('mAlamat').innerText = p.alamat || '-';
+            document.getElementById('mNoHP').innerText = p.no_hp || '-';
             document.getElementById('mPend').innerText = p.pendidikan_terakhir || '-';
             document.getElementById('mBakti').innerText = p.masa_bakti || '-';
 
@@ -210,6 +287,24 @@
 
             // Membuka modal detail
             openModal('modalDetail');
+        }
+
+        function showEditForm(p) {
+            let form = document.getElementById('editPengurusForm');
+            let url = "{{ url('admin/update-pengurus') }}/" + p.id;
+
+            form.action = url;
+
+            document.getElementById('eNama').value = p.nama || '';
+            document.getElementById('eJabatan').value = p.jabatan || '';
+            document.getElementById('eJK').value = p.jenis_kelamin || '';
+            document.getElementById('eAlamat').value = p.alamat || '';
+            document.getElementById('ePend').value = p.pendidikan_terakhir || '';
+            document.getElementById('eBakti').value = p.masa_bakti || '';
+            document.getElementById('eEmail').value = p.email || '';
+            document.getElementById('eNoHP').value = p.no_hp || '';
+
+            openModal('modalEdit');
         }
     </script>
 @endsection

@@ -82,6 +82,12 @@
                             </td>
                         </tr>
                     @endforeach
+
+                    @if ($santri->isEmpty())
+                        <tr>
+                            <td colspan="5" class="p-4 text-center text-gray-400">Belum ada data santri saat ini.</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>

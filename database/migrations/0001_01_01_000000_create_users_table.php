@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['super_admin', 'pengurus'])->default('pengurus');
-            $table->enum('is_verified', ['Terverifikasi', 'Verifikasi Ditolak'])->default('Verifikasi Ditolak');
+            $table->enum('is_verified', ['Terverifikasi', 'Verifikasi Ditolak', 'Menunggu Verifikasi'])->default('Menunggu Verifikasi');
             $table->rememberToken();
             $table->timestamps();
         });

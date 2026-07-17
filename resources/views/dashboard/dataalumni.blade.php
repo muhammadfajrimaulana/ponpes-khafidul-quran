@@ -63,6 +63,12 @@
                             </td>
                         </tr>
                     @endforeach
+
+                    @if ($alumni->isEmpty())
+                        <tr>
+                            <td colspan="5" class="p-4 text-center text-gray-400">Belum ada data alumni saat ini.</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>

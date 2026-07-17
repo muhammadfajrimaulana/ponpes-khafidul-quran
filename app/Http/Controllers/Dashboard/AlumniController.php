@@ -13,7 +13,7 @@ class AlumniController extends \App\Http\Controllers\Controller
 
         if ($request->has('search')) {
             $query->where('nama', 'like', '%' . $request->search . '%')
-                ->orWhere('kode_santri', 'like', '%' . $request->search . '%')
+                ->orWhere('nisn', 'like', '%' . $request->search . '%')
                 ->orWhere('nama_wali', 'like', '%' . $request->search . '%')
                 ->orWhere('kontak_wali', 'like', '%' . $request->search . '%')
                 ->orWhere('alamat', 'like', '%' . $request->search . '%')

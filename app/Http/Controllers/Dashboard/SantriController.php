@@ -13,7 +13,7 @@ class SantriController extends \App\Http\Controllers\Controller
 
         if ($request->has('search')) {
             $query->where('nama_santri', 'like', '%' . $request->search . '%')
-                ->orWhere('kode_santri', 'like', '%' . $request->search . '%')
+                ->orWhere('nisn', 'like', '%' . $request->search . '%')
                 ->orWhere('nama_wali', 'like', '%' . $request->search . '%')
                 ->orWhere('kontak_wali', 'like', '%' . $request->search . '%')
                 ->orWhere('alamat', 'like', '%' . $request->search . '%')
@@ -22,6 +22,42 @@ class SantriController extends \App\Http\Controllers\Controller
 
         $santri = $query->paginate(10);
         return view('dashboard.datasantri', compact('santri'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama_santri' => 'required|string|max:255',
+            'nisn' => 'required|unique:santris,nisn',
+            'jenis_kelamin' => 'required|string',
+            'kelas' => 'required|string',
+            'angkatan'      => 'required|digits:4',
+            'alamat' => 'required|string',
+            'nama_wali' => 'required|string',
+            'kontak_wali' => 'required|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $santri = new \App\Models\Santri();
+        $santri->nama_santri = $request->input('nama_santri');
+        $santri->nisn = $request->input('nisn');
+        $santri->jenis_kelamin = $request->input('jenis_kelamin');
+        $santri->angkatan = $request->input('angkatan');
+        $santri->kelas = $request->input('kelas');
+        $santri->nama_wali = $request->input('nama_wali');
+        $santri->kontak_wali = $request->input('kontak_wali');
+        $santri->alamat = $request->input('alamat');
+        $santri->status = $request->input('status');
+
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/santri'), $filename);
+            $santri->foto = $filename;
+        }
+
+        $santri->save();
+        return redirect()->back()->with('success', 'Data santri berhasil ditambahkan.');
     }
 
     public function updateStatus(Request $request, $id)

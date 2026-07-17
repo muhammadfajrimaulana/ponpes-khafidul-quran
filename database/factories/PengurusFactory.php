@@ -11,6 +11,7 @@ class PengurusFactory extends Factory
         return [
             'nama' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
+            'no_hp' => $this->faker->phoneNumber(),
             'jabatan' => $this->faker->jobTitle(),
             'jenis_kelamin' => $this->faker->randomElement(['Laki-laki', 'Perempuan']),
             'alamat' => $this->faker->address(),
