@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Santri extends Model
 {
-    /** @use HasFactory<\Database\Factories\PengurusFactory> */
     use HasFactory;
     protected $table = 'santris';
     protected $fillable = ['nama_santri', 'foto', 'nama_wali', 'kontak_wali', 'jenis_kelamin', 'nisn', 'kelas', 'angkatan', 'alamat', 'status'];
