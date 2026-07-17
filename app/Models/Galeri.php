@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Galeri extends Model
 {
-    protected $fillable = ['judul', 'tipe', 'link', 'gambar'];
+    use HasFactory;
+    protected $fillable = ['judul', 'tipe', 'file_path', 'url_video'];
 }
