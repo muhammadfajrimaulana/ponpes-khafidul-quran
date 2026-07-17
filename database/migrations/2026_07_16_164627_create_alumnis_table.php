@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('nisn')->unique();
             $table->string('alamat');
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
-            $table->string('tahun_lulus');
+            $table->string('tahun_lulus')->nullable();
             $table->string('pekerjaan')->nullable();
             $table->string('kampus')->nullable();
             $table->string('nama_wali');

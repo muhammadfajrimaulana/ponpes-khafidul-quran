@@ -84,6 +84,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/admin/delete-santri/{id}', [SantriController::class, 'destroy'])->name('admin.delete-santri');
 
         Route::get('/admin/alumni', [AlumniController::class, 'index'])->name('admin.alumni');
+        Route::get('/admin/alumni/{id}/edit', [AlumniController::class, 'edit'])->name('alumni.edit');
+        Route::put('/admin/alumni/{id}', [AlumniController::class, 'update'])->name('alumni.update');
         Route::get('/admin/berita', [BeritaController::class, 'index'])->name('admin.berita');
         Route::get('/admin/create-berita', [BeritaController::class, 'create'])->name('admin.create-berita');
         Route::post('/admin/store-berita', [BeritaController::class, 'store'])->name('admin.store-berita');
