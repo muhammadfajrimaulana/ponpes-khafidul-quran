@@ -47,9 +47,19 @@ class MenuController extends \App\Http\Controllers\Controller
     {
         return view('web.berita.artikel');
     }
-    public function santri()
+    public function santri(Request $request)
     {
-        $santri = Santri::all();
+        $santri = Santri::query()
+            ->when($request->kelas, function ($query) use ($request) {
+                $query->where('kelas', $request->kelas);
+            })
+            ->when($request->search, function ($query) use ($request) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('nama_santri', 'like', '%' . $request->search . '%')
+                        ->orWhere('nisn', 'like', '%' . $request->search . '%');
+                });
+            })
+            ->get();
         return view('web.dokumen.datasantri', compact('santri'));
     }
     public function alumni()

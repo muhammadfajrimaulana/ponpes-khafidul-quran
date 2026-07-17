@@ -184,26 +184,35 @@
         <div class="shadow-sm"
             style="background: #fff; padding: 50px 35px; border-radius: 24px; margin-top: -40px; position: relative; z-index: 5;">
 
-            <div class="row g-3 mb-5 justify-content-center p-4 bg-light border-0" style="border-radius: 16px;">
+            <form action="{{ route('santri') }}" method="GET"
+                class="row g-3 mb-5 justify-content-center p-4 bg-light border-0" style="border-radius: 16px;">
                 <div class="col-md-3">
-                    <select class="form-select shadow-none" style="border-color: #ced4da;">
-                        <option>Pilih Jenjang/Kelas</option>
-                        <option>Kelas VII - MTs</option>
-                        <option>Kelas VIII - MTs</option>
-                        <option>Kelas IX - MTs</option>
-                        <option>Kelas X - MA</option>
-                        <option>Kelas XI - MA</option>
-                        <option>Kelas XII - MA</option>
+                    <select name="kelas" class="form-select shadow-none" onchange="this.form.submit()">
+                        <option value="">Pilih Jenjang/Kelas</option>
+                        @foreach (['VII / 1 MTs', 'VIII / 2 MTs', 'IX / 3 MTs', 'X / 1 MA', 'XI / 2 MA', 'XII / 3 MA'] as $k)
+                            <option value="{{ $k }}" {{ request('kelas') == $k ? 'selected' : '' }}>
+                                {{ $k }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <div class="input-group">
-                        <input type="text" class="form-control shadow-none"
-                            placeholder="Cari nama atau NISN Santri...">
-                        <button class="btn btn-primary px-4"><i class="bi bi-search"></i></button>
+                    <div class="d-flex gap-3">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control shadow-none"
+                                placeholder="Cari nama atau NISN Santri..." value="{{ request('search') }}">
+
+                            <button type="submit" class="btn btn-primary px-3 gap-4">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+
+                        <a href="{{ route('santri') }}" class="btn btn-secondary px-3">
+                            Reset
+                        </a>
                     </div>
                 </div>
-            </div>
+            </form>
 
             <div class="text-center text-lg-start mb-4">
                 <span class="text-primary fw-bold text-uppercase small" style="letter-spacing: 1px;">Daftar Seluruh
@@ -214,22 +223,27 @@
 
             <div class="row g-4 justify-content-center">
                 <div class="row g-4 justify-content-center">
-                    @foreach ($santri as $item)
+                    @forelse ($santri as $item)
                         <div class="col-lg-4 col-md-6">
                             <div class="card-santri">
                                 <div
                                     style="height: 120px; background: linear-gradient(to right, #004b87 0%, #003366 100%); position: relative;">
                                     <div
                                         style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); z-index: 2;">
-                                        <!-- Gunakan asset untuk foto -->
-                                        <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama }}"
+                                        @php
+                                            $fotoPath = 'storage/profiles/' . $item->foto;
+                                            $fotoTersedia = !empty($item->foto) && file_exists(public_path($fotoPath));
+                                        @endphp
+
+                                        <img src="{{ $fotoTersedia ? asset($fotoPath) : asset('storage/profiles/default.jpg') }}"
+                                            alt="Foto {{ $item->nama_santri }}"
                                             style="width: 110px; height: 110px; border-radius: 50%; border: 5px solid #fff; object-fit: cover; background: #f8f9fa;">
                                     </div>
                                 </div>
                                 <div style="padding: 70px 20px 35px 20px;">
                                     <h5
                                         style="font-weight: 800; font-size: 1.1rem; color: #003366; margin-bottom: 5px; text-transform: uppercase;">
-                                        {{ $item->nama }}</h5>
+                                        {{ $item->nama_santri }}</h5>
                                     <p style="font-size: 0.9rem; color: #666; margin-bottom: 25px;">
                                         {{ $item->kelas }}</p>
                                     <!-- Tombol memicu JavaScript untuk mengisi modal -->
@@ -239,9 +253,15 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="col-12 text-center py-5">
+                            <div class="alert alert-warning d-inline-block px-5 py-3 shadow-sm" role="alert">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <strong>Oops!</strong> Data santri tidak ditemukan untuk kriteria pencarian tersebut.
+                            </div>
+                        </div>
+                    @endforelse
                 </div>
-
             </div>
         </div>
     </div>
@@ -361,9 +381,11 @@
         });
 
         function showDetail(data) {
+            let baseUrl = "{{ asset('storage/profiles/') }}/";
+            let fotoUrl = data.foto ? baseUrl + data.foto : "{{ asset('storage/profiles/default.jpg') }}";
             // Isi data ke dalam modal
-            document.getElementById('mFoto').src = "{{ asset('storage/') }}/" + data.foto;
-            document.getElementById('mNama').innerText = data.nama;
+            document.getElementById('mFoto').src = fotoUrl;
+            document.getElementById('mNama').innerText = data.nama_santri;
             document.getElementById('mNisn').innerText = data.nisn;
             document.getElementById('mJk').innerText = data.jenis_kelamin;
             document.getElementById('mKelas').innerText = data.kelas;

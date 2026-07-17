@@ -9,6 +9,7 @@ class AlumniFactory extends Factory
     public function definition(): array
     {
         return [
+            'santri_id' => \App\Models\Santri::factory(),
             'nama' => $this->faker->name(),
             'nisn' => $this->faker->unique()->numerify('######'),
             'jenis_kelamin' => $this->faker->randomElement(['Laki-laki', 'Perempuan']),
