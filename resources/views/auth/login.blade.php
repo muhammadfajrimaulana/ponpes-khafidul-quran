@@ -1,4 +1,7 @@
 <x-guest-layout>
+
+    @section('title', 'Login Administrator')
+
     <div class="mb-8 text-center">
         <h2 class="text-3xl font-bold text-black">Selamat Datang</h2>
         <span class="text-gray-500 mt-2">Silakan masuk ke dashboard admin</span>
