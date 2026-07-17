@@ -8,7 +8,7 @@ class PengurusController extends \App\Http\Controllers\Controller
 {
     public function index()
     {
-        $pengurus = \App\Models\Pengurus::all();
+        $pengurus = \App\Models\User::where('role', 'pengurus')->with('pengurus')->get();
         return view('dashboard.datapengurus', compact('pengurus'));
     }
 

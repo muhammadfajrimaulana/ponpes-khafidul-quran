@@ -16,6 +16,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
+        \App\Models\User::factory(10)->create(['role' => 'pengurus'])->each(function ($user) {
+            \App\Models\Pengurus::factory()->create([
+                'user_id' => $user->id,
+                'nama' => $user->name,
+                'email' => $user->email,
+            ]);
+        });
 
         $this->call([
             UserSeeder::class,

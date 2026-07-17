@@ -9,6 +9,6 @@ class PengurusSeeder extends Seeder
 {
     public function run(): void
     {
-        Pengurus::factory()->count(10)->create();
+        Pengurus::factory()->withUser()->create();
     }
 }

@@ -10,6 +10,7 @@ class PengurusFactory extends Factory
     {
         return [
             'nama' => $this->faker->name(),
+            // 'user_id' => \App\Models\User::factory(),
             'email' => $this->faker->unique()->safeEmail(),
             'no_hp' => $this->faker->phoneNumber(),
             'jabatan' => $this->faker->jobTitle(),
@@ -21,5 +22,13 @@ class PengurusFactory extends Factory
             'pendidikan_terakhir' => $this->faker->randomElement(['S1', 'S2', 'S3']),
             'masa_bakti' => '2025-2027',
         ];
+    }
+
+    // Di PengurusFactory.php
+    public function withUser(): self
+    {
+        return $this->state([
+            'user_id' => \App\Models\User::factory(),
+        ]);
     }
 }

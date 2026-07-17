@@ -19,13 +19,6 @@ class UserSeeder extends Seeder
             'is_verified' => 'Terverifikasi',
         ]);
 
-        // Buat Akun Pengurus untuk Testing
-        User::create([
-            'name' => 'Khalid Alfian',
-            'email' => 'pengurus@gmail.com',
-            'password' => Hash::make('tes123'),
-            'role' => 'pengurus',
-            'is_verified' => 'Menunggu Verifikasi',
-        ]);
+        // User::factory()->count(10)->create();
     }
 }

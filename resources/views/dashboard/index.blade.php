@@ -11,28 +11,28 @@
             <div class="text-emerald-500 text-3xl mr-5"><i class="fas fa-users"></i></div>
             <div>
                 <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Santri Aktif</p>
-                <h2 class="text-2xl font-bold">1,284</h2>
+                <h2 class="text-2xl font-bold">{{ $total_santri_aktif }}</h2>
             </div>
         </div>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center">
             <div class="text-blue-500 text-3xl mr-5"><i class="fas fa-user-graduate"></i></div>
             <div>
                 <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Alumni</p>
-                <h2 class="text-2xl font-bold">450</h2>
+                <h2 class="text-2xl font-bold">{{ $total_alumni }}</h2>
             </div>
         </div>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center">
             <div class="text-amber-500 text-3xl mr-5"><i class="fas fa-user-tie"></i></div>
             <div>
                 <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Pengurus</p>
-                <h2 class="text-2xl font-bold">12</h2>
+                <h2 class="text-2xl font-bold">{{ $total_pengurus }}</h2>
             </div>
         </div>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center">
             <div class="text-purple-500 text-3xl mr-5"><i class="fas fa-pen-nib"></i></div>
             <div>
-                <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Kajian</p>
-                <h2 class="text-2xl font-bold">89</h2>
+                <p class="text-gray-500 text-xs uppercase font-bold tracking-wider">Berita/Kajian</p>
+                <h2 class="text-2xl font-bold">{{ $total_berita }}</h2>
             </div>
         </div>
     </div>

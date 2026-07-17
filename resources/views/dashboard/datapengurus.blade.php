@@ -120,40 +120,40 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y text-gray-700">
-                    @foreach ($pengurus as $p)
+                    @foreach ($pengurus as $u)
                         <tr>
-                            <td class="p-4 flex items-center gap-3">
-                                @php
-                                    $fotoPath = 'storage/profiles/' . $p->foto;
-                                    $fotoTersedia = !empty($p->foto) && file_exists(public_path($fotoPath));
-                                @endphp
-
-                                <img src="{{ $fotoTersedia ? asset($fotoPath) : asset('storage/profiles/default.jpg') }}"
-                                    alt="Foto {{ $p->nama }}" class="w-10 h-10 rounded-full object-cover">
-                            </td>
-                            <td class="p-4">{{ $p->nama }}</td>
-                            <td class="p-4">{{ $p->email }}</td>
+                            <!-- Akses foto dari relasi $u->pengurus -->
                             <td class="p-4">
-                                @if ($p->is_verified)
+                                <img src="{{ $u->pengurus && $u->pengurus->foto ? asset('storage/profiles/' . $u->pengurus->foto) : asset('storage/profiles/default.jpg') }}"
+                                    class="w-10 h-10 rounded-full object-cover">
+                            </td>
+                            <td class="p-4">{{ $u->name }}</td>
+                            <td class="p-4">{{ $u->email }}</td>
+
+                            <!-- Status sekarang langsung dari tabel users -->
+                            <td class="p-4">
+                                @if ($u->is_verified === 'Terverifikasi')
                                     <span
-                                        class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">Terverifikasi</span>
-                                @elseif ($p->is_verified === 'Verifikasi Ditolak')
-                                    <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">Verifikasi
-                                        Ditolak</span>
+                                        class="bg-green-500 text-white px-3 py-1 rounded-full text-xs">Terverifikasi</span>
+                                @elseif ($u->is_verified === 'Verifikasi Ditolak')
+                                    <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs">Ditolak</span>
                                 @else
-                                    <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">Menunggu
-                                        Verifikasi</span>
+                                    <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs">Menunggu</span>
                                 @endif
                             </td>
+
                             <td class="p-4">
-                                <button onclick='showDetail(@json($p))'
-                                    class="bg-emerald-600 text-white px-2 py-1 rounded-lg hover:bg-emerald-700">
-                                    <i class="fas fa-eye text-sm"></i>
-                                </button>
-                                <button onclick='showEditForm(@json($p))'
-                                    class="bg-blue-600 text-white px-2 py-1 rounded-lg hover:bg-blue-700 ml-3">
-                                    <i class="fas fa-edit text-sm"></i>
-                                </button>
+                                <!-- Tombol Aksi -->
+                                <div class="flex gap-2">
+                                    <button onclick="showDetail({{ $u->pengurus ? $u->pengurus->toJson() : '{}' }})"
+                                        class="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button onclick="showEditForm({{ $u->toJson() }})"
+                                        class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -289,22 +289,27 @@
             openModal('modalDetail');
         }
 
-        function showEditForm(p) {
+
+        function showEditForm(user) {
+            document.getElementById('modalEdit').classList.remove('hidden');
+
+            document.getElementById('eNama').value = user.name;
+            document.getElementById('eEmail').value = user.email;
+            document.getElementById('eStatus').value = user.is_verified;
+
+            if (user.pengurus) {
+                document.getElementById('eJabatan').value = user.pengurus.jabatan || '';
+                document.getElementById('eJK').value = user.pengurus.jenis_kelamin || '';
+                document.getElementById('ePend').value = user.pengurus.pendidikan_terakhir || '';
+                document.getElementById('eNoHP').value = user.pengurus.no_hp || ''; // Ini yang tadi kosong
+                document.getElementById('eBakti').value = user.pengurus.masa_bakti || '';
+                document.getElementById('eAlamat').value = user.pengurus.alamat || '';
+            }
+
             let form = document.getElementById('editPengurusForm');
-            let url = "{{ url('admin/update-pengurus') }}/" + p.id;
+            let url = "{{ url('admin/update-pengurus') }}/" + user.id;
 
             form.action = url;
-
-            document.getElementById('eNama').value = p.nama || '';
-            document.getElementById('eJabatan').value = p.jabatan || '';
-            document.getElementById('eJK').value = p.jenis_kelamin || '';
-            document.getElementById('eAlamat').value = p.alamat || '';
-            document.getElementById('ePend').value = p.pendidikan_terakhir || '';
-            document.getElementById('eBakti').value = p.masa_bakti || '';
-            document.getElementById('eEmail').value = p.email || '';
-            document.getElementById('eNoHP').value = p.no_hp || '';
-
-            openModal('modalEdit');
         }
     </script>
 @endsection

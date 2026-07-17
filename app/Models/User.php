@@ -27,7 +27,12 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'is_verified' => 'boolean',
+            'is_verified' => 'string',
         ];
+    }
+
+    public function pengurus()
+    {
+        return $this->hasOne(Pengurus::class);
     }
 }

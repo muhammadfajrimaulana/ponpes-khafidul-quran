@@ -158,7 +158,18 @@
                                     alt="Foto {{ $item->nama_santri }}" class="w-10 h-10 rounded-full object-cover">
                             </td>
                             <td class="p-4">{{ $item->nama_santri }}</td>
-                            <td class="p-4">{{ $item->kelas }}</td>
+                            <td class="p-4">
+                                <span
+                                    class="{{ $item->status == 'aktif'
+                                        ? 'bg-green-100 text-green-700'
+                                        : ($item->status == 'alumni'
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : 'bg-yellow-100 text-yellow-700') }} px-2 py-1 rounded text-xs">
+
+                                    {{ $item->status == 'aktif' ? $item->kelas : ($item->status == 'alumni' ? 'Lulus' : ucfirst($item->status)) }}
+
+                                </span>
+                            </td>
                             <td class="p-4">{{ $item->angkatan }}</td>
                             <td class="p-4">{{ $item->alamat }}</td>
                             <td class="p-4">
@@ -251,7 +262,9 @@
 
             document.getElementById('sNama').innerText = s.nama_santri || '-';
             document.getElementById('sNisn').innerText = s.nisn || '-';
-            document.getElementById('sKelas').innerText = s.kelas || '-';
+
+            let kelasDisplay = (s.status === 'alumni') ? 'Lulus' : (s.kelas || '-');
+            document.getElementById('sKelas').innerText = kelasDisplay;
             document.getElementById('sNamaWali').innerText = s.nama_wali || '-';
             document.getElementById('sKontakWali').innerText = s.kontak_wali || '-';
             document.getElementById('sAngkatan').innerText = s.angkatan || '-';
