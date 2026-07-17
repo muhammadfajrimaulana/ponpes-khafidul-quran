@@ -8,7 +8,6 @@ class SantriController extends \App\Http\Controllers\Controller
 {
     public function index(Request $request)
     {
-        // Logika filter sederhana
         $query = \App\Models\Santri::query();
 
         if ($request->has('search')) {
@@ -64,18 +63,16 @@ class SantriController extends \App\Http\Controllers\Controller
     {
         $santri = \App\Models\Santri::findOrFail($id);
 
-        // Jika status diubah menjadi alumni
         if ($request->status === 'alumni') {
-            // Cek apakah sudah ada di tabel alumni agar tidak duplikat
             \App\Models\Alumni::updateOrCreate(
-                ['kode_santri' => $santri->kode_santri], // Key untuk cek duplikat
+                ['kode_santri' => $santri->kode_santri],
                 [
                     'nama' => $santri->nama_santri,
                     'foto' => $santri->foto,
                     'angkatan' => $santri->angkatan,
                     'nama_wali' => $santri->nama_wali,
                     'kontak_wali' => $santri->kontak_wali,
-                    'tahun_lulus' => date('Y'), // Tahun saat ini
+                    'tahun_lulus' => date('Y'),
                 ]
             );
         }

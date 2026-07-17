@@ -92,7 +92,7 @@
 
     {{-- Modal Detail Alumni --}}
     <div id="modalAlumni" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden">
+        <div id="modalBox" class="bg-white rounded-2xl w-full max-w-lg overflow-hidden">
             <div id="viewDetail">
                 <div class="bg-slate-800 text-white p-4 flex justify-between">
                     <span class="font-bold">PROFIL ALUMNI</span>
@@ -159,10 +159,6 @@
                 </div>
 
                 <div class="flex justify-end gap-3 pt-4 border-t">
-                    <button type="button" onclick="event.preventDefault(); toggleEdit(false);"
-                        class="px-5 py-2 text-gray-600 hover:bg-gray-100 font-medium rounded-lg transition">
-                        Batal
-                    </button>
                     <button type="submit"
                         class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition transform active:scale-95">
                         Simpan
@@ -211,5 +207,22 @@
             document.getElementById('viewDetail').classList.toggle('hidden', isEdit);
             document.getElementById('formEditAlumni').classList.toggle('hidden', !isEdit);
         }
+
+        const modalAlumni = document.getElementById('modalAlumni');
+        const modalBox = document.getElementById('modalBox');
+
+        modalAlumni.addEventListener('click', function(event) {
+            if (event.target === modalAlumni) {
+                closeModal();
+                toggleEdit(false);
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && !modalAlumni.classList.contains('hidden')) {
+                closeModal();
+                toggleEdit(false);
+            }
+        });
     </script>
 @endsection

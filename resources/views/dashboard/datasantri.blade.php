@@ -88,7 +88,8 @@
                         <input type="number" name="kontak_wali" placeholder="Kontak Wali"
                             class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition">
 
-                        <input type="number" name="angkatan" placeholder="Angkatan"
+                        <input type="number" name="angkatan" placeholder="Angkatan" max="9999"
+                            oninput="if (this.value.length > 4) this.value = this.value.slice(0, 4);"
                             class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition">
 
                         <select name="status"
@@ -159,23 +160,32 @@
                             </td>
                             <td class="p-4">{{ $item->nama_santri }}</td>
                             <td class="p-4">
-                                <span
-                                    class="{{ $item->status == 'aktif'
-                                        ? 'bg-green-100 text-green-700'
-                                        : ($item->status == 'alumni'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'bg-yellow-100 text-yellow-700') }} px-2 py-1 rounded text-xs">
+                                @php
+                                    $statusStyle = [
+                                        'aktif' => 'bg-green-100 text-green-700',
+                                        'alumni' => 'bg-blue-100 text-blue-700',
+                                        'nonaktif' => 'bg-red-100 text-red-700',
+                                    ];
+                                    // Ambil dari array, kalau tidak ada pakai kuning
+                                    $class = $statusStyle[$item->status] ?? 'bg-yellow-100 text-yellow-700';
+                                @endphp
 
+                                <span class="{{ $class }} px-2 py-1 rounded text-xs">
                                     {{ $item->status == 'aktif' ? $item->kelas : ($item->status == 'alumni' ? 'Lulus' : ucfirst($item->status)) }}
-
                                 </span>
                             </td>
                             <td class="p-4">{{ $item->angkatan }}</td>
                             <td class="p-4">{{ $item->alamat }}</td>
                             <td class="p-4">
                                 <span
-                                    class="{{ $item->status == 'aktif' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }} px-2 py-1 rounded text-xs">
-                                    {{ ucfirst($item->status) }}
+                                    class="
+        {{ $item->status == 'aktif' ? 'bg-green-100 text-green-700' : '' }}
+        {{ $item->status == 'alumni' ? 'bg-blue-100 text-blue-700' : '' }}
+        {{ $item->status == 'nonaktif' ? 'bg-red-100 text-red-700' : '' }}
+        {{ !in_array($item->status, ['aktif', 'alumni', 'nonaktif']) ? 'bg-yellow-100 text-yellow-700' : '' }}
+        px-2 py-1 rounded text-xs">
+
+                                    {{ $item->status == 'aktif' ? 'Aktif' : ($item->status == 'alumni' ? 'Alumni' : ucfirst($item->status)) }}
                                 </span>
                             </td>
                             <td class="p-4">
