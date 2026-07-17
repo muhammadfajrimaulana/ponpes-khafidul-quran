@@ -62,9 +62,27 @@ class MenuController extends \App\Http\Controllers\Controller
             ->get();
         return view('web.dokumen.datasantri', compact('santri'));
     }
-    public function alumni()
+    public function alumni(Request $request)
     {
-        return view('web.dokumen.dataalumni');
+        $alumni = Alumni::query();
+
+        // Filter Angkatan
+        if ($request->filled('angkatan')) {
+            $alumni->where('angkatan', $request->angkatan);
+        }
+
+        // Filter Nama
+        if ($request->filled('search')) {
+            $alumni->where('nama', 'LIKE', '%' . $request->search . '%')
+                ->orWhere('tahun_lulus', 'LIKE', '%' . $request->search . '%')
+                ->orWhere('pekerjaan', 'LIKE', '%' . $request->search . '%')
+                ->orWhere('kampus', 'LIKE', '%' . $request->search . '%');
+        }
+
+        $alumni = $alumni->get();
+        $daftar_angkatan = Alumni::select('angkatan')->distinct()->pluck('angkatan');
+
+        return view('web.dokumen.dataalumni', compact('alumni', 'daftar_angkatan'));
     }
     public function foto()
     {

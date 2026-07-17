@@ -256,8 +256,15 @@
                     @empty
                         <div class="col-12 text-center py-5">
                             <div class="alert alert-warning d-inline-block px-5 py-3 shadow-sm" role="alert">
-                                <i class="bi bi-info-circle me-2"></i>
-                                <strong>Oops!</strong> Data santri tidak ditemukan untuk kriteria pencarian tersebut.
+                                @if (request()->hasAny(['search', 'angkatan']))
+                                    <!-- Jika user sedang mencari tapi tidak ketemu -->
+                                    <i class="bi bi-search me-2"></i>
+                                    <strong>Oops!</strong> Data santri untuk kriteria tersebut tidak tersedia.
+                                @else
+                                    <!-- Jika database memang benar-benar kosong -->
+                                    <i class="bi bi-database-exclamation me-2"></i>
+                                    <strong>Belum ada data!</strong> Saat ini belum ada data santri yang tersimpan.
+                                @endif
                             </div>
                         </div>
                     @endforelse
